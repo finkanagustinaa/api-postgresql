@@ -1,4 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const categorySwagger = require('../routes/category_swagger')
 
 const options = {
   definition: {

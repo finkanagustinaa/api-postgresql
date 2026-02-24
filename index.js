@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require("cors");
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./utils/swagger');
 
@@ -9,6 +11,11 @@ const authRoutes = require('./routes/auth_route');
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+
+const categoryRoute = require("./routes/category_route");
+
+app.use("/category", categoryRoute);
 
 app.get('/', (req, res) => {
     res.send('Server jalan');

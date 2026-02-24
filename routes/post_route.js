@@ -37,6 +37,7 @@ const upload = multer({ storage: storage });
  *       - bearerAuth: []
  */
 
+
 /**
  * @swagger
  * /posts:

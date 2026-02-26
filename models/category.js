@@ -12,7 +12,7 @@ const createCategory = async (name) => {
 // GET ALL
 const getAllCategory = async () => {
   const result = await pool.query(
-    'SELECT * FROM categories ORDER BY id DESC'
+    'SELECT id, name FROM categories ORDER BY id ASC'
   );
   return result.rows;
 };

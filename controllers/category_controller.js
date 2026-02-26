@@ -1,43 +1,65 @@
 const categoryModel = require('../models/category');
 
 // CREATE
-exports.createCategory = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const category = await categoryModel.createCategory(name);
-
-    res.status(201).json(category);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+const createCategory = async (req, res) => {
+    try {
+        const { name } = req.body;
+        const category = await categoryModel.createCategory(name);
+        res.status(201).json(category);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 // GET ALL
-exports.getCategory = async (req, res) => {
-  const categories = await categoryModel.getAllCategory();
-  res.json(categories);
+const getCategory = async (req, res) => {
+    try {
+        const categories = await categoryModel.getAllCategory();
+        res.json(categories);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 // GET BY ID
-exports.getCategoryById = async (req, res) => {
-  const { id } = req.params;
-  const category = await categoryModel.getCategoryById(id);
-  res.json(category);
+const getCategoryById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const category = await categoryModel.getCategoryById(id);
+        if (!category) return res.status(404).json({ message: "Category tidak ditemukan" });
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 // UPDATE
-exports.updateCategory = async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
-  const category = await categoryModel.updateCategory(id, name);
-  res.json(category);
+const updateCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+        const category = await categoryModel.updateCategory(id, name);
+        res.json(category);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 // DELETE
-exports.deleteCategory = async (req, res) => {
-  const { id } = req.params;
-  await categoryModel.deleteCategory(id);
+const deleteCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await categoryModel.deleteCategory(id);
+        res.json({ message: 'Category berhasil dihapus' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-  res.json({ message: 'Category berhasil dihapus' });
+module.exports = {
+    createCategory,
+    getCategory,
+    getCategoryById,
+    updateCategory,
+    deleteCategory
 };

@@ -1,27 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
+const upload = require('../middlewares/upload');
 
 const {
-  getPosts,
+  getAllPosts,
   createPost,
   updatePost,
   deletePost
 } = require('../controllers/post_controller');
 
-// Konfigurasi penyimpanan gambar
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueName = Date.now() + path.extname(file.originalname);
-    cb(null, uniqueName);
-  }
-});
 
-const upload = multer({ storage: storage });
 /**
  * @swagger
  * tags:
@@ -62,14 +50,17 @@ const upload = multer({ storage: storage });
  *           schema:
  *             type: object
  *             required:
- *              -judul
- *              -isi
- *              -gambar
+ *               - judul
+ *               - isi
+ *               - category_id
  *             properties:
  *               judul:
  *                 type: string
  *               isi:
  *                 type: string
+ *               category_id:
+ *                 type: integer
+ *                 example: 1
  *               gambar:
  *                 type: string
  *                 format: binary
@@ -102,6 +93,9 @@ const upload = multer({ storage: storage });
  *                 type: string
  *               isi:
  *                 type: string
+ *               category_id:
+ *                 type: integer
+ *               example: 1
  *     responses:
  *       200:
  *         description: Post berhasil diupdate
@@ -129,7 +123,7 @@ const upload = multer({ storage: storage });
  */
 
 // ROUTES
-router.get('/', getPosts);
+router.get("/", getAllPosts);
 router.post('/', upload.single('gambar'), createPost);
 router.put('/:id', updatePost);
 router.delete('/:id', deletePost);

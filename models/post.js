@@ -29,7 +29,7 @@ const getAllPosts = async () => {
 };
 
 // UPDATE
-const updatePost = async (id, title, isi, gambar, category_id) => {
+const updatePost = async (id, judul, isi, gambar, category_id) => {
   const result = await pool.query(
     `UPDATE posts 
      SET judul = $1,
@@ -38,12 +38,10 @@ const updatePost = async (id, title, isi, gambar, category_id) => {
          category_id = $4
      WHERE id = $5
      RETURNING *`,
-    [title, isi, gambar, category_id, id]
+    [judul, isi, gambar, category_id, id] // Pastikan urutan variabel ini sama dengan $1, $2, dst
   );
-
-  return result.rows[0]; // bisa undefined
+  return result.rows[0];
 };
-
 
 const deletePost = async (id) => {
   await pool.query(
@@ -63,5 +61,6 @@ module.exports = {
   getAllPosts,
   updatePost,
   deletePost,
+  getPostById,
 };
 

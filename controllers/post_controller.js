@@ -28,16 +28,14 @@ const getAllPosts = async (req, res) => {
 
 // GET BY ID
 const getPostById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const post = await postModel.getPostById(id);
-        if (!post) return res.status(404).json({ message: "Post tidak ditemukan" });
-
-        post.gambar = getImageUrl(post.gambar);
-        res.json(post);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    const post = await postModel.getPostById(id); // Memanggil model
+    if (!post) return res.status(404).json({ message: "Menu tidak ditemukan" });
+    res.json({ success: true, data: post });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // CREATE
@@ -53,7 +51,7 @@ const createPost = async (req, res) => {
                 .jpeg({ quality: 80 })
                 .toBuffer();
 
-            const fileName = `posts/${Date.now()}-${req.file.originalname}`;
+            const fileName = `${Date.now()}-${req.file.originalname}`;
             const bucketName = process.env.MINIO_BUCKET || 'api-bucket';
 
             // Upload ke MinIO
@@ -90,7 +88,7 @@ const updatePost = async (req, res) => {
 
         if (req.file) {
             const resizedImage = await sharp(req.file.buffer).resize({ width: 800 }).toBuffer();
-            const fileName = `posts/${Date.now()}-${req.file.originalname}`;
+            const fileName = `${Date.now()}-${req.file.originalname}`;
             await minioClient.putObject(process.env.MINIO_BUCKET || 'api-bucket', fileName, resizedImage, resizedImage.length);
             fileNameInDb = fileName;
         }

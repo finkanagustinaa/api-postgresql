@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middlewares/upload');
+const categoryController = require('../controllers/category_controller');
 
 const {
   getAllPosts,
   createPost,
   updatePost,
-  deletePost
+  deletePost,
+  getPostById
 } = require('../controllers/post_controller');
-
 
 /**
  * @swagger
@@ -127,5 +128,9 @@ router.get("/", getAllPosts);
 router.post('/', upload.single('gambar'), createPost);
 router.put('/:id', updatePost);
 router.delete('/:id', deletePost);
+router.get("/category", categoryController.getCategory);
+router.get("/:id", getPostById);
 
+// Pastikan baris ini ada!
+router.get("/categories", categoryController.getCategory);
 module.exports = router;

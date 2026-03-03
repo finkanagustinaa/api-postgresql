@@ -15,7 +15,7 @@ app.use(cors());
 
 const categoryRoute = require("./routes/category_route");
 
-app.use("/category", categoryRoute);
+app.use("/categories", categoryRoute);
 
 app.get('/', (req, res) => {
     res.send('Server jalan');
